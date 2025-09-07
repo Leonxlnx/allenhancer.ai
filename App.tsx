@@ -86,8 +86,11 @@ const App: React.FC = () => {
   };
   
   const renderContent = () => {
+    // FIX: The original condition `phase === AppPhase.CHATTING` was impossible within the outer `if` block,
+    // causing a TypeScript error. Changed to `phase === AppPhase.INITIAL` to fix the error and
+    // ensure the loader message is contextually appropriate.
     if (isLoading && phase !== AppPhase.CHATTING) {
-      return <Loader message={phase === AppPhase.CHATTING ? "Thinking of a question..." : "Generating final prompt..."}/>;
+      return <Loader message={phase === AppPhase.INITIAL ? "Thinking of a question..." : "Generating final prompt..."}/>;
     }
 
     switch (phase) {

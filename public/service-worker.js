@@ -1,9 +1,10 @@
 const CACHE_NAME = 'prompt-enhancer-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  // You would add other assets here like JS bundles, CSS, images, etc.
-  // For this CDN-based setup, we'll keep it simple.
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
