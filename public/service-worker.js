@@ -1,10 +1,11 @@
 const CACHE_NAME = 'prompt-enhancer-v1';
+// Use absolute paths including the repository name for GitHub Pages compatibility
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  '/allenhancer.ai/',
+  '/allenhancer.ai/index.html',
+  '/allenhancer.ai/manifest.json',
+  '/allenhancer.ai/icon-192.png',
+  '/allenhancer.ai/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
