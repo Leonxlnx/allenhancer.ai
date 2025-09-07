@@ -1,59 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
-import { Language } from '../types';
 
-// Fix: Define interfaces for the Web Speech API to resolve TypeScript errors,
-// as these are not standard in TypeScript's DOM library.
-interface SpeechRecognitionAlternative {
-  readonly transcript: string;
-}
-
-interface SpeechRecognitionResult {
-  readonly isFinal: boolean;
-  readonly length: number;
-  [index: number]: SpeechRecognitionAlternative;
-}
-
-interface SpeechRecognitionResultList {
-  readonly length: number;
-  [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionEvent extends Event {
-  readonly resultIndex: number;
-  readonly results: SpeechRecognitionResultList;
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  readonly error: string;
-}
-
-interface SpeechRecognitionInstance {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  onstart: () => void;
-  onend: () => void;
-  onerror: (event: SpeechRecognitionErrorEvent) => void;
-  onresult: (event: SpeechRecognitionEvent) => void;
-  start: () => void;
-  stop: () => void;
+// FIX: Add type declarations for SpeechRecognition APIs to the global Window object to resolve TypeScript errors.
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
 }
 
 const getSpeechRecognition = () => {
   if (typeof window !== 'undefined') {
-    // Fix: Cast `window` to `any` to access vendor-prefixed or non-standard properties.
-    return (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    return window.SpeechRecognition || window.webkitSpeechRecognition;
   }
   return undefined;
 };
 
 const SpeechRecognition = getSpeechRecognition();
 
-export const useSpeechRecognition = (onTranscriptChange: (transcript: string) => void) => {
+export const useSpeechRecognition = (onTranscriptChange) => {
   const [isListening, setIsListening] = useState(false);
-  const [language, setLanguage] = useState<Language>('en-US');
-  // Fix: Use the custom `SpeechRecognitionInstance` interface for the ref's type.
-  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const [language, setLanguage] = useState('en-US');
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
     if (!SpeechRecognition) {
@@ -61,7 +28,7 @@ export const useSpeechRecognition = (onTranscriptChange: (transcript: string) =>
       return;
     }
 
-    const recognition: SpeechRecognitionInstance = new SpeechRecognition();
+    const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = language;

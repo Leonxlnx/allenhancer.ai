@@ -1,11 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
-import { ChatMessage } from '../types';
 
-if (!process.env.API_KEY) {
-  console.warn("Gemini API key is not set in process.env.API_KEY. The application may not function correctly.");
+// IMPORTANT: In a standard browser environment like GitHub Pages, `process.env` does not exist.
+// This was causing the application to crash on load.
+// I am providing a placeholder key to allow the app to initialize.
+// You MUST replace "YOUR_GEMINI_API_KEY" with a valid key for the AI features to work.
+const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
+
+
+if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
+  console.warn("Gemini API key is not set. Please replace 'YOUR_GEMINI_API_KEY' in services/geminiService.js. The application will not function correctly without it.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 const SYSTEM_INSTRUCTION = `You are a prompt engineering assistant. Your goal is to help a user refine their initial prompt by asking one clarifying question at a time.
 Analyze the provided initial prompt and the conversation history.
@@ -15,7 +21,7 @@ Your task is to identify a single, crucial missing piece of information. This co
 - Frame your questions clearly and directly.
 - After 3-4 rounds of questions, or if you believe you have sufficient information to create a detailed prompt, you MUST respond with the single word: DONE`;
 
-export const askFollowUpQuestion = async (initialPrompt: string, history: ChatMessage[]): Promise<string> => {
+export const askFollowUpQuestion = async (initialPrompt, history) => {
   const model = "gemini-2.5-flash";
 
   let fullPrompt = `Initial Prompt: "${initialPrompt}"\n\n`;

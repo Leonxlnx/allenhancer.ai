@@ -6,7 +6,7 @@ const SYSTEM_PROMPT = `You are an expert prompt engineer. Your task is to take t
 - The final prompt should be ready to use with a powerful large language model.
 - Do not ask for more information. Generate the best possible prompt with the given details.`;
 
-export const generateFinalPrompt = async (initialPrompt: string, collectedAnswers: string): Promise<string> => {
+export const generateFinalPrompt = async (initialPrompt, collectedAnswers) => {
   const userContent = `Initial prompt: "${initialPrompt}".\n\nAdditional context from our conversation: "${collectedAnswers}"`;
 
   try {
