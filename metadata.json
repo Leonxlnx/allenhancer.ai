@@ -1,0 +1,7 @@
+{
+  "name": "AI Prompt Enhancer PWA",
+  "description": "An intelligent PWA that helps you craft the perfect prompt through an interactive AI-powered conversation. Refine your ideas with guided questions and generate professional, detailed prompts for any large language model.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
